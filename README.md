@@ -23,7 +23,7 @@ JadeView 是一个基于 Rust 开发的 WebView 窗口库，提供 C 语言兼�
 
 ### 预编译版本
 
-从 [Releases](https://github.com/yourusername/JadeView/releases) 页面下载最新的预编译动态库：
+从 [Releases](https://github.com/JadeViewDocs/library/releases) 页面下载最新的预编译动态库：
 
 - `JadeView-dist_all_platforms.zip`：包含所有平台的动态库
 - `JadeView-dist_x86.zip`：仅包含 x86 平台动态库
