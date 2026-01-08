@@ -1,0 +1,354 @@
+/* =========================================
+   Windows 11 (Fluent Design) Variables
+   ========================================= */
+:root {
+    --app-bg: transparent; 
+    
+    /* 浅色模式主题变量 */
+    --title-bar-bg: rgba(255, 255, 255, 0.4);
+    --surface-bg: rgba(255, 255, 255, 0.6);
+    --surface-border: rgba(0, 0, 0, 0.08);
+    --text-primary: #1a1a1a;
+    --text-secondary: #5d5d5d;
+    --accent-color: #0067c0;
+    --accent-hover: #005a9e;
+    --accent-text: #ffffff;
+    
+    --control-bg: rgba(255, 255, 255, 0.7);
+    --control-border: rgba(0, 0, 0, 0.1);
+    --control-hover-bg: rgba(255, 255, 255, 0.9);
+    
+    --hover-bg: rgba(0, 0, 0, 0.05);
+    --active-bg: rgba(0, 0, 0, 0.1);
+    
+    --radius-sm: 4px;
+    --radius-md: 8px;
+}
+
+[data-theme="dark"] {
+    /* 深色模式主题变量 */
+    --title-bar-bg: rgba(32, 32, 32, 0.4);
+    --surface-bg: rgba(45, 45, 45, 0.6);
+    --surface-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #adadad;
+    --accent-color: #4cc2ff;
+    --accent-hover: #4cc2ff;
+    --accent-text: #000000;
+    
+    --control-bg: rgba(255, 255, 255, 0.07);
+    --control-border: rgba(255, 255, 255, 0.1);
+    --control-hover-bg: rgba(255, 255, 255, 0.12);
+    
+    --hover-bg: rgba(255, 255, 255, 0.08);
+    --active-bg: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================
+   基础布局
+   ========================================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--app-bg); /* 关键：透明以支持 Mica */
+}
+
+body {
+    font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+/* =========================================
+   自定义标题栏 & CSS 绘图按钮
+   ========================================= */
+.custom-title-bar {
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--title-bar-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--surface-border);
+    app-region: drag;
+    flex-shrink: 0;
+    z-index: 9999;
+}
+
+.title-left {
+    padding-left: 12px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Windows 11风格标题栏图标 - CSS绘图 */
+.title-bar-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.title-right {
+    display: flex;
+    -webkit-app-region: no-drag;
+    height: 100%;
+}
+
+/* 按钮通用样式 */
+.window-btn {
+    width: 46px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.1s;
+    outline: none;
+    border-radius: 0;
+}
+
+.window-btn:hover { background-color: var(--hover-bg); }
+
+/* 关闭按钮红色反馈 */
+.window-btn.btn-close:hover { background-color: #e81123 !important; }
+.window-btn.btn-close:hover i::before,
+.window-btn.btn-close:hover i::after { background-color: white !important; }
+
+/* 图标绘图基础 */
+.window-btn i {
+    display: block;
+    position: relative;
+    background-color: var(--text-primary);
+    transition: background-color 0.1s;
+}
+
+/* 最小化图标 - 横线 */
+.btn-minimize i { width: 10px; height: 1px; }
+
+/* 最大化图标 - 方框 */
+.btn-maximize i {
+    width: 9px; height: 9px;
+    background-color: transparent !important;
+    border: 1px solid var(--text-primary);
+    
+    border-radius: 2px;
+}
+
+/* 关闭图标 - 叉号 */
+.btn-close i { width: 12px; height: 12px; background-color: transparent !important; }
+.btn-close i::before, .btn-close i::after {
+    content: '';
+    position: absolute;
+    top: 50%; 
+    left: 0;
+    width: 100%; 
+    height: 1px;
+    background-color: var(--text-primary);
+    transform: translateY(-50%); /* 确保垂直居中 */
+}
+.btn-close i::before { transform: translateY(-50%) rotate(45deg); }
+.btn-close i::after { transform: translateY(-50%) rotate(-45deg); }
+
+/* 文档图标 - 问号 */
+.btn-doc i { width: 12px; height: 12px; background-color: transparent !important; }
+.btn-doc i::before {
+    content: '?';
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    width: 100%; 
+    height: 100%;
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: bold;
+    transform: translate(-50%, -50%); /* 确保完全居中 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 还原图标 - 双方框设计 */
+.btn-restore i {
+    width: 12px;
+    height: 12px;
+    background-color: transparent !important;
+    position: relative;
+    display: block;
+}
+
+/* 底层方块：仅绘制右边和顶边 */
+.btn-restore i::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -2px;
+    left:3px;
+    border-right: 1px solid var(--text-primary);
+    border-top: 1px solid var(--text-primary);
+    border-radius: 2px;
+    background-color: transparent;
+}
+
+/* 顶层方块：完整四边 */
+.btn-restore i::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: 0;
+    left: 0;
+    border: 1px solid var(--text-primary);
+    border-radius: 2px;
+    background-color: transparent;
+}
+
+/* =========================================
+   内容容器与控件
+   ========================================= */
+.app-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px 24px 24px;
+    overflow: hidden;
+}
+
+h3 { margin: 8px 0 16px 0; font-size: 24px; font-weight: 600; }
+
+.section-title {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 12px 0 8px 0;
+    opacity: 0.8;
+}
+
+.btn-group { display: flex; gap: 4px; margin-bottom: 12px; }
+
+.doc-link {
+    margin: 16px 0;
+    padding: 12px;
+    background-color: var(--surface-bg);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.doc-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.doc-link a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+button {
+    background-color: var(--control-bg);
+    border: 1px solid var(--control-border);
+    color: var(--text-primary);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.1s;
+    border-bottom: 1px solid rgba(0,0,0,0.2); /* 模拟 Win11 按钮阴影 */
+}
+
+
+
+button:hover { 
+    background-color: var(--control-hover-bg); 
+    
+}
+button:active { transform: scale(0.97); opacity: 0.8; }
+
+.theme-active {
+    background-color: var(--accent-color) !important;
+    border-color: transparent;
+    color: var(--accent-text);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   聊天与输入区 (Glass Effect)
+   ========================================= */
+.chat-area {
+    flex: 1;
+    background-color: var(--surface-bg);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    margin: 12px 0;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.message {
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    max-width: 80%;
+    font-size: 14px;
+    line-height: 1.4;
+    animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.sent { align-self: flex-end; background: var(--accent-color); color: var(--accent-text); }
+.message.received { align-self: flex-start; background: var(--control-bg); border: 1px solid var(--surface-border); }
+
+.input-area { display: flex; gap: 8px; }
+
+input[type="text"] {
+    flex: 1;
+    background-color: var(--control-bg);
+    border: 1px solid var(--control-border);
+    border-bottom: 2px solid var(--control-border);
+    border-radius: var(--radius-sm);
+    padding: 0 12px;
+    height: 32px;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.2s;
+}
+
+input[type="text"]:focus {
+    background-color: var(--surface-bg);
+    border-bottom-color: var(--accent-color);
+}
+
+#sendBtn {
+    background-color: var(--accent-color);
+    color: var(--accent-text);
+    border: none;
+    padding: 0 20px;
+    font-weight: 500;
+}

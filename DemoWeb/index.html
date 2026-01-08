@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JadeView WinUI Demo</title>
+    <link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="/favicon.png">
+</head>
+
+<body>
+    <div class="custom-title-bar" style="
+  app-region: drag; 
+">
+        <div class="title-left">
+            <img class="title-bar-icon" src="./favicon.png" alt="Logo">
+            JadeView WinUI Demo
+        </div>
+        <div class="title-right">
+            <button class="window-btn btn-doc"
+                onclick="window.open('https://jade.run/'', '_blank')"
+                title="开发文档"><i></i></button>
+            <button class="window-btn btn-minimize" onclick="sendWindowAction('minimize')"><i></i></button>
+            <button class="window-btn btn-maximize" onclick="sendWindowAction('maximize')"><i></i></button>
+            <button class="window-btn btn-close" onclick="sendWindowAction('close')"><i></i></button>
+        </div>
+    </div>
+    <div class="app-window">
+        <div class="header">
+            <h3>仿WinUI3 的设置界面</h3>
+
+            <span class="section-title">设置背景材料</span>
+            <div class="btn-group" id="backdropGroup">
+                <button onclick="setBackdrop('mica')">Mica</button>
+                <button onclick="setBackdrop('micaAlt')">Mica Alt</button>
+                <button onclick="setBackdrop('acrylic')">Acrylic</button>
+            </div>
+
+            <span class="section-title">主题设置</span>
+            <div class="btn-group" id="themeGroup">
+                <button onclick="setTheme('Light')">浅色</button>
+                <button onclick="setTheme('Dark')">暗色</button>
+                <button onclick="setTheme('System')" class="theme-active">跟随系统</button>
+            </div>
+
+        </div>
+
+        <div class="chat-area" id="chatContainer">
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="msgInput" placeholder="发送IPC消息" autocomplete="off">
+            <button id="sendBtn" onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+
+    <script>
+        function setTheme(theme) {
+            jade.ipcSend('setTheme', theme);
+        }
+
+        function setBackdrop(backdropType) {
+            jade.ipcSend('setBackdrop', backdropType);
+            console.log('设置背景材料:', backdropType);
+
+            // 激活对应的背景材料按钮
+            activateBackdropButton(backdropType);
+        }
+        // ========================
+        // 1. 发送消息功能 (使用jade.ipcSend)
+        // ========================
+        const input = document.getElementById('msgInput');
+        const chatContainer = document.getElementById('chatContainer');
+
+        function sendMessage() {
+            const text = input.value.trim();
+            if (!text) return;
+            // 使用新的jade.ipcSend方法，直接发送通道和内容
+            jade.ipcSend('message', text);
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', 'sent');
+            msgDiv.textContent = text;
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            input.value = '';
+            input.focus();
+        }
+
+        // 回车发送
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // ========================
+        // 2. 主题按钮激活功能
+        // ========================
+        function activateThemeButton(theme) {
+            const themeGroup = document.getElementById('themeGroup');
+            if (!themeGroup) return;
+
+            // 移除所有按钮的激活状态
+            const buttons = themeGroup.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.classList.remove('theme-active');
+            });
+
+            // 激活对应的按钮
+            const targetButton = Array.from(buttons).find(btn =>
+                btn.textContent.toLowerCase() === theme.toLowerCase() ||
+                btn.getAttribute('onclick')?.includes(theme)
+            );
+
+            if (targetButton) {
+                targetButton.classList.add('theme-active');
+            }
+        }
+
+        // ========================
+        // 3. 背景材料按钮激活功能
+        // ========================
+        function activateBackdropButton(backdropType) {
+            const backdropGroup = document.getElementById('backdropGroup');
+            if (!backdropGroup) return;
+
+            // 移除所有按钮的激活状态
+            const buttons = backdropGroup.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.classList.remove('theme-active');
+            });
+
+            // 激活对应的按钮
+            const targetButton = Array.from(buttons).find(btn =>
+                btn.textContent.toLowerCase() === backdropType.toLowerCase() ||
+                btn.getAttribute('onclick')?.includes(backdropType)
+            );
+
+            if (targetButton) {
+                targetButton.classList.add('theme-active');
+            }
+        }
+
+        // 监听主题设置消息========================开始
+        function updateSystemTheme() {
+            const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const theme = isDark ? "dark" : "light";
+            document.documentElement.setAttribute('data-theme', theme);
+            console.log('系统主题已更新为:', theme);
+        }
+        // 初始检测
+        updateSystemTheme();
+        // 监听系统主题变化
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateSystemTheme);
+        //监听主题设置消息===================结束
+
+        jade.ipcMain('setTheme', function (theme) {
+            console.log('收到主题设置消息:', theme);
+            // 处理主题设置逻辑
+            if (theme) {
+                // 激活对应的主题按钮
+                activateThemeButton(theme);
+            }
+        });
+
+        // 标题栏按钮功能实现 - 使用同一个IPC通道发送不同的消息内容
+        function sendWindowAction(action) {
+            jade.ipcSend('windowAction', action);
+            console.log(`发送窗口操作消息: ${action}`);
+        }
+
+        // 监听窗口状态变化事件，用于更新最大化/还原按钮
+        jade.ipcMain('window-state-changed', function (state) {
+            const btnMaximize = document.querySelector('.btn-maximize') || document.querySelector('.btn-restore');
+            data = JSON.parse(state);
+            if (btnMaximize) {
+                if (data.isMaximized) {
+                    // 窗口已最大化，显示还原图标
+                    btnMaximize.classList.add('btn-restore');
+                    btnMaximize.classList.remove('btn-maximize');
+                } else {
+                    // 窗口未最大化，显示最大化图标
+                    btnMaximize.classList.add('btn-maximize');
+                    btnMaximize.classList.remove('btn-restore');
+                }
+            }
+        });
+
+        // ========================
+        // 3. 接收IPC消息功能 (使用新的jade.ipcMain订阅机制)
+        // ========================
+        // 使用jade.ipcMain订阅消息
+        if (window.jade && window.jade.ipcMain) {
+            // 订阅'message'类型的消息
+            jade.ipcMain('message', function (msg) {
+                console.log('通过jade.ipcMain收到消息:', msg);
+
+                // 处理消息
+                if (msg) {
+                    // 将收到的消息添加到聊天区域
+                    const msgDiv = document.createElement('div');
+                    msgDiv.classList.add('message', 'received');
+                    msgDiv.textContent = msg;
+                    chatContainer.appendChild(msgDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            });
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
