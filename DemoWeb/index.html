@@ -20,9 +20,12 @@
         <div class="title-right">
             <button type="button" class="window-btn btn-doc" onclick="window.open('https://jade.run/', '_blank')"
                 title="开发文档"><i></i></button>
-            <button type="button" class="window-btn btn-minimize" onclick="sendWindowAction('minimize')" title="最小化窗口"><i></i></button>
-            <button type="button" class="window-btn btn-maximize" onclick="sendWindowAction('maximize')" title="最大化窗口"><i></i></button>
-            <button type="button" class="window-btn btn-close" onclick="sendWindowAction('close')" title="关闭窗口"><i></i></button>
+            <button type="button" class="window-btn btn-minimize" onclick="sendWindowAction('minimize')"
+                title="最小化窗口"><i></i></button>
+            <button type="button" class="window-btn btn-maximize" onclick="sendWindowAction('maximize')"
+                title="最大化窗口"><i></i></button>
+            <button type="button" class="window-btn btn-close" onclick="sendWindowAction('close')"
+                title="关闭窗口"><i></i></button>
         </div>
     </div>
     <div class="app-window">
@@ -36,7 +39,7 @@
                 <button type="button" id="sendBtn" onclick="sendMessage()">发送</button>
             </div>
         </div>
-        
+
         <!-- 右侧设置区域 -->
         <div class="right-panel">
             <div class="header">
@@ -57,7 +60,7 @@
                 </div>
 
             </div>
-            
+
             <!-- 文档链接卡片 -->
             <div class="doc-cards">
                 <span class="section-title">文档链接</span>
@@ -69,7 +72,7 @@
                             <div class="card-desc">开始使用 JadeView</div>
                         </div>
                     </a>
-           
+
                     <a href="https://jade.run/guidesi" class="doc-card" target="_blank">
                         <div class="card-icon">⚙️</div>
                         <div class="card-content">
@@ -77,7 +80,7 @@
                             <div class="card-desc">事件类型，方法，属性等等</div>
                         </div>
                     </a>
-                
+
                     <a href="https://qm.qq.com/q/pL3Lo2kAgg" class="doc-card" target="_blank">
                         <div class="card-icon">⭐</div>
                         <div class="card-content">
@@ -94,7 +97,8 @@
         // 使用新的invoke API调用后端方法
         async function setTheme(theme) {
             try {
-                jade.invoke('setTheme', theme);
+                const payload = await jade.invoke('setTheme', theme);
+                activateThemeButton(payload);
             } catch (error) {
                 console.error('设置主题失败:', error);
             }
@@ -102,7 +106,7 @@
 
         async function setBackdrop(backdropType) {
             try {
-              const  newBackdropType= await jade.invoke('setBackdrop', backdropType);
+                const newBackdropType = await jade.invoke('setBackdrop', backdropType);
                 console.log('设置背景材料:', newBackdropType);
                 // 激活对应的背景材料按钮
                 activateBackdropButton(newBackdropType);
@@ -120,15 +124,15 @@
             const text = input.value.trim();
             if (!text) return;
             // 创建带时间戳的JSON消息
-              // 显示发送的消息
-                const sentMsgDiv = document.createElement('div');
-                sentMsgDiv.classList.add('message', 'sent');
-                const now = new Date();
-                sentMsgDiv.innerHTML = `
+            // 显示发送的消息
+            const sentMsgDiv = document.createElement('div');
+            sentMsgDiv.classList.add('message', 'sent');
+            const now = new Date();
+            sentMsgDiv.innerHTML = `
                     <div class="msg-content">${text}</div>
                     <div class="msg-time">${now.toLocaleTimeString()}.${now.getMilliseconds().toString().padStart(3, '0')}</div>
                 `;
-                chatContainer.appendChild(sentMsgDiv);
+            chatContainer.appendChild(sentMsgDiv);
             try {
                 // 使用新的invoke API发送消息并直接获取返回结果
                 const result = await jade.invoke('message', text);
@@ -193,7 +197,7 @@
 
             // 激活对应的按钮
             const targetButton = Array.from(buttons).find(btn =>
-                btn.textContent.toLowerCase() === backdropType.toLowerCase() ||
+                btn.textContent.toLowerCase() === backdropType ||
                 btn.getAttribute('onclick')?.includes(backdropType)
             );
 
@@ -221,7 +225,7 @@
                     console.error('获取平台版本失败:', e);
                 }
             }
-            
+
             // 方法2：使用传统的userAgent字符串（兼容性更好）
             const userAgent = navigator.userAgent;
             console.log('User Agent:', userAgent);
@@ -231,11 +235,11 @@
                 // 或者直接假设现代Windows 10系统都支持背景材料
                 return true;
             }
-            
+
             // 方法3：检查是否支持backdrop-filter属性
             const isBackdropSupported = CSS.supports('backdrop-filter', 'blur(10px)');
             console.log('Backdrop Filter Supported:', isBackdropSupported);
-            
+
             return isBackdropSupported;
         }
 
@@ -243,7 +247,7 @@
         function updatePageBackground(theme) {
             const appWindow = document.querySelector('.app-window');
             if (!appWindow) return;
-            
+
             if (theme === 'dark') {
                 appWindow.style.backgroundColor = '#1e1e1e';
             } else {
@@ -256,7 +260,7 @@
             const isWin11 = await isWindows11();
             const backdropGroup = document.getElementById('backdropGroup');
             const appWindow = document.querySelector('.app-window');
-            
+
             if (!isWin11) {
                 // 非Windows 11系统，禁用背景材料选项
                 if (backdropGroup) {
@@ -266,7 +270,7 @@
                         btn.classList.add('disabled');
                     });
                 }
-                
+
                 // 设置初始背景色
                 const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
                 updatePageBackground(currentTheme);
@@ -279,7 +283,7 @@
             const theme = isDark ? "dark" : "light";
             document.documentElement.setAttribute('data-theme', theme);
             console.log('系统主题已更新为:', theme);
-            
+
             // 检查是否为Windows 11，非Windows 11则更新背景色
             isWindows11().then(isWin11 => {
                 if (!isWin11) {
@@ -287,7 +291,7 @@
                 }
             });
         }
-        
+
         // 初始检测
         updateSystemTheme();
         // 初始化页面
@@ -296,15 +300,7 @@
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateSystemTheme);
         //监听主题设置消息===================结束
 
-        // 使用新的on API监听主题设置事件
-        jade.on('setTheme', function (payload) {
-            console.log('收到主题设置消息:', payload);
-            // 处理主题设置逻辑
-            if (payload) {
-                // 激活对应的主题按钮
-                activateThemeButton(payload);
-            }
-        });
+
 
         // 标题栏按钮功能实现 - 使用新的invoke API
         async function sendWindowAction(action) {
