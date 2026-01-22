@@ -226,9 +226,26 @@ body {
 .app-window {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     padding: 16px 24px 24px 24px;
+    gap: 16px;
     overflow: hidden;
+}
+
+/* 左侧聊天区域 */
+.left-panel {
+    width: 58%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 右侧设置区域 */
+.right-panel {
+    width: 42%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 h3 { margin: 8px 0 16px 0; font-size: 24px; font-weight: 600; }
@@ -285,11 +302,84 @@ button:hover {
 }
 button:active { transform: scale(0.97); opacity: 0.8; }
 
+button.disabled,
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: var(--control-bg) !important;
+    border-color: var(--control-border) !important;
+    color: var(--text-secondary) !important;
+}
+
 .theme-active {
     background-color: var(--accent-color) !important;
     border-color: transparent;
     color: var(--accent-text);
     border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   文档卡片样式
+   ========================================= */
+
+
+/* 卡片网格布局 */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+/* 文档卡片样式 */
+.doc-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--surface-bg);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.doc-card:hover {
+    background-color: var(--control-hover-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* 卡片图标 */
+.card-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+/* 卡片内容 */
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 卡片标题 */
+.card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 卡片描述 */
+.card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
 }
 
 /* =========================================
@@ -309,12 +399,15 @@ button:active { transform: scale(0.97); opacity: 0.8; }
 }
 
 .message {
-    padding: 8px 12px;
-    border-radius: var(--radius-md);
     max-width: 80%;
     font-size: 14px;
     line-height: 1.4;
     animation: slideUp 0.2s ease-out;
+}
+
+.msg-content {
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
 }
 
 @keyframes slideUp {
@@ -322,8 +415,38 @@ button:active { transform: scale(0.97); opacity: 0.8; }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.message.sent { align-self: flex-end; background: var(--accent-color); color: var(--accent-text); }
-.message.received { align-self: flex-start; background: var(--control-bg); border: 1px solid var(--surface-border); }
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.message.sent {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+.message.received {
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+.message.sent .msg-content {
+    background: var(--accent-color);
+    color: var(--accent-text);
+}
+
+.message.received .msg-content {
+    background: var(--control-bg);
+    border: 1px solid var(--surface-border);
+}
+
+.msg-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    padding: 0 4px;
+}
 
 .input-area { display: flex; gap: 8px; }
 

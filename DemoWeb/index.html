@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JadeView WinUI Demo</title>
     <link rel="stylesheet" href="/style.css">
-<link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 
 <body>
@@ -18,54 +18,97 @@
             JadeView WinUI Demo
         </div>
         <div class="title-right">
-            <button class="window-btn btn-doc"
-                onclick="window.open('https://jade.run/'', '_blank')"
+            <button type="button" class="window-btn btn-doc" onclick="window.open('https://jade.run/', '_blank')"
                 title="开发文档"><i></i></button>
-            <button class="window-btn btn-minimize" onclick="sendWindowAction('minimize')"><i></i></button>
-            <button class="window-btn btn-maximize" onclick="sendWindowAction('maximize')"><i></i></button>
-            <button class="window-btn btn-close" onclick="sendWindowAction('close')"><i></i></button>
+            <button type="button" class="window-btn btn-minimize" onclick="sendWindowAction('minimize')" title="最小化窗口"><i></i></button>
+            <button type="button" class="window-btn btn-maximize" onclick="sendWindowAction('maximize')" title="最大化窗口"><i></i></button>
+            <button type="button" class="window-btn btn-close" onclick="sendWindowAction('close')" title="关闭窗口"><i></i></button>
         </div>
     </div>
     <div class="app-window">
-        <div class="header">
-            <h3>仿WinUI3 的设置界面</h3>
-
-            <span class="section-title">设置背景材料</span>
-            <div class="btn-group" id="backdropGroup">
-                <button onclick="setBackdrop('mica')">Mica</button>
-                <button onclick="setBackdrop('micaAlt')">Mica Alt</button>
-                <button onclick="setBackdrop('acrylic')">Acrylic</button>
+        <!-- 左侧聊天区域 -->
+        <div class="left-panel">
+            <div class="chat-area" id="chatContainer">
             </div>
 
-            <span class="section-title">主题设置</span>
-            <div class="btn-group" id="themeGroup">
-                <button onclick="setTheme('Light')">浅色</button>
-                <button onclick="setTheme('Dark')">暗色</button>
-                <button onclick="setTheme('System')" class="theme-active">跟随系统</button>
+            <div class="input-area">
+                <input type="text" id="msgInput" placeholder="发送IPC消息" autocomplete="off">
+                <button type="button" id="sendBtn" onclick="sendMessage()">发送</button>
             </div>
-
         </div>
+        
+        <!-- 右侧设置区域 -->
+        <div class="right-panel">
+            <div class="header">
+                <h3>仿WinUI3 的设置界面</h3>
 
-        <div class="chat-area" id="chatContainer">
-        </div>
+                <span class="section-title">设置背景材料</span>
+                <div class="btn-group" id="backdropGroup">
+                    <button type="button" onclick="setBackdrop('mica')">Mica</button>
+                    <button type="button" onclick="setBackdrop('micaAlt')">Mica Alt</button>
+                    <button type="button" onclick="setBackdrop('acrylic')">Acrylic</button>
+                </div>
 
-        <div class="input-area">
-            <input type="text" id="msgInput" placeholder="发送IPC消息" autocomplete="off">
-            <button id="sendBtn" onclick="sendMessage()">发送</button>
+                <span class="section-title">主题设置</span>
+                <div class="btn-group" id="themeGroup">
+                    <button type="button" onclick="setTheme('Light')">浅色</button>
+                    <button type="button" onclick="setTheme('Dark')">暗色</button>
+                    <button type="button" onclick="setTheme('System')" class="theme-active">跟随系统</button>
+                </div>
+
+            </div>
+            
+            <!-- 文档链接卡片 -->
+            <div class="doc-cards">
+                <span class="section-title">文档链接</span>
+                <div class="cards-grid">
+                    <a href="https://jade.run/spec/quickstart" class="doc-card" target="_blank">
+                        <div class="card-icon">📖</div>
+                        <div class="card-content">
+                            <div class="card-title">快速入门</div>
+                            <div class="card-desc">开始使用 JadeView</div>
+                        </div>
+                    </a>
+           
+                    <a href="https://jade.run/guidesi" class="doc-card" target="_blank">
+                        <div class="card-icon">⚙️</div>
+                        <div class="card-content">
+                            <div class="card-title">Api文档</div>
+                            <div class="card-desc">事件类型，方法，属性等等</div>
+                        </div>
+                    </a>
+                
+                    <a href="https://qm.qq.com/q/pL3Lo2kAgg" class="doc-card" target="_blank">
+                        <div class="card-icon">⭐</div>
+                        <div class="card-content">
+                            <div class="card-title">QQ群</div>
+                            <div class="card-desc">交流反馈和讨论</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function setTheme(theme) {
-            jade.ipcSend('setTheme', theme);
+        // 使用新的invoke API调用后端方法
+        async function setTheme(theme) {
+            try {
+                jade.invoke('setTheme', theme);
+            } catch (error) {
+                console.error('设置主题失败:', error);
+            }
         }
 
-        function setBackdrop(backdropType) {
-            jade.ipcSend('setBackdrop', backdropType);
-            console.log('设置背景材料:', backdropType);
-
-            // 激活对应的背景材料按钮
-            activateBackdropButton(backdropType);
+        async function setBackdrop(backdropType) {
+            try {
+              const  newBackdropType= await jade.invoke('setBackdrop', backdropType);
+                console.log('设置背景材料:', newBackdropType);
+                // 激活对应的背景材料按钮
+                activateBackdropButton(newBackdropType);
+            } catch (error) {
+                console.error('设置背景材料失败:', error);
+            }
         }
         // ========================
         // 1. 发送消息功能 (使用jade.ipcSend)
@@ -73,18 +116,37 @@
         const input = document.getElementById('msgInput');
         const chatContainer = document.getElementById('chatContainer');
 
-        function sendMessage() {
+        async function sendMessage() {
             const text = input.value.trim();
             if (!text) return;
-            // 使用新的jade.ipcSend方法，直接发送通道和内容
-            jade.ipcSend('message', text);
-            const msgDiv = document.createElement('div');
-            msgDiv.classList.add('message', 'sent');
-            msgDiv.textContent = text;
-            chatContainer.appendChild(msgDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            input.value = '';
-            input.focus();
+            // 创建带时间戳的JSON消息
+              // 显示发送的消息
+                const sentMsgDiv = document.createElement('div');
+                sentMsgDiv.classList.add('message', 'sent');
+                const now = new Date();
+                sentMsgDiv.innerHTML = `
+                    <div class="msg-content">${text}</div>
+                    <div class="msg-time">${now.toLocaleTimeString()}.${now.getMilliseconds().toString().padStart(3, '0')}</div>
+                `;
+                chatContainer.appendChild(sentMsgDiv);
+            try {
+                // 使用新的invoke API发送消息并直接获取返回结果
+                const result = await jade.invoke('message', text);
+                // 显示返回的结果
+                const receivedMsgDiv = document.createElement('div');
+                receivedMsgDiv.classList.add('message', 'received');
+                receivedMsgDiv.innerHTML = `
+                    <div class="msg-content">${result.data || result}</div>
+                    <div class="msg-time">${now.toLocaleTimeString()}.${now.getMilliseconds().toString().padStart(3, '0')}</div>
+                `;
+                chatContainer.appendChild(receivedMsgDiv);
+
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                input.value = '';
+                input.focus();
+            } catch (error) {
+                console.error('发送消息失败:', error);
+            }
         }
 
         // 回车发送
@@ -140,40 +202,125 @@
             }
         }
 
+        // 检测是否为Windows 11
+        async function isWindows11() {
+            // 方法1：使用navigator.userAgentData（现代浏览器）
+            if (navigator.userAgentData) {
+                try {
+                    const uaData = await navigator.userAgentData.getHighEntropyValues(['platformVersion']);
+                    console.log('UA Data:', uaData);
+                    if (uaData.platform === 'Windows') {
+                        const platformVersion = uaData.platformVersion;
+                        const build = parseInt(platformVersion.split('.')[0]);
+                        console.log('Windows Build:', build);
+                        if (build >= 22000) {
+                            return true;
+                        }
+                    }
+                } catch (e) {
+                    console.error('获取平台版本失败:', e);
+                }
+            }
+            
+            // 方法2：使用传统的userAgent字符串（兼容性更好）
+            const userAgent = navigator.userAgent;
+            console.log('User Agent:', userAgent);
+            if (userAgent.includes('Windows NT 10.0;')) {
+                // Windows 10或11都使用Windows NT 10.0作为基础版本
+                // 检查是否有Win64或x64标识，以及可能的其他Windows 11特征
+                // 或者直接假设现代Windows 10系统都支持背景材料
+                return true;
+            }
+            
+            // 方法3：检查是否支持backdrop-filter属性
+            const isBackdropSupported = CSS.supports('backdrop-filter', 'blur(10px)');
+            console.log('Backdrop Filter Supported:', isBackdropSupported);
+            
+            return isBackdropSupported;
+        }
+
+        // 更新页面背景色
+        function updatePageBackground(theme) {
+            const appWindow = document.querySelector('.app-window');
+            if (!appWindow) return;
+            
+            if (theme === 'dark') {
+                appWindow.style.backgroundColor = '#1e1e1e';
+            } else {
+                appWindow.style.backgroundColor = '#f3f3f3';
+            }
+        }
+
+        // 初始化页面设置
+        async function initPage() {
+            const isWin11 = await isWindows11();
+            const backdropGroup = document.getElementById('backdropGroup');
+            const appWindow = document.querySelector('.app-window');
+            
+            if (!isWin11) {
+                // 非Windows 11系统，禁用背景材料选项
+                if (backdropGroup) {
+                    const buttons = backdropGroup.querySelectorAll('button');
+                    buttons.forEach(btn => {
+                        btn.disabled = true;
+                        btn.classList.add('disabled');
+                    });
+                }
+                
+                // 设置初始背景色
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+                updatePageBackground(currentTheme);
+            }
+        }
+
         // 监听主题设置消息========================开始
         function updateSystemTheme() {
             const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
             const theme = isDark ? "dark" : "light";
             document.documentElement.setAttribute('data-theme', theme);
             console.log('系统主题已更新为:', theme);
+            
+            // 检查是否为Windows 11，非Windows 11则更新背景色
+            isWindows11().then(isWin11 => {
+                if (!isWin11) {
+                    updatePageBackground(theme);
+                }
+            });
         }
+        
         // 初始检测
         updateSystemTheme();
+        // 初始化页面
+        initPage();
         // 监听系统主题变化
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateSystemTheme);
         //监听主题设置消息===================结束
 
-        jade.ipcMain('setTheme', function (theme) {
-            console.log('收到主题设置消息:', theme);
+        // 使用新的on API监听主题设置事件
+        jade.on('setTheme', function (payload) {
+            console.log('收到主题设置消息:', payload);
             // 处理主题设置逻辑
-            if (theme) {
+            if (payload) {
                 // 激活对应的主题按钮
-                activateThemeButton(theme);
+                activateThemeButton(payload);
             }
         });
 
-        // 标题栏按钮功能实现 - 使用同一个IPC通道发送不同的消息内容
-        function sendWindowAction(action) {
-            jade.ipcSend('windowAction', action);
-            console.log(`发送窗口操作消息: ${action}`);
+        // 标题栏按钮功能实现 - 使用新的invoke API
+        async function sendWindowAction(action) {
+            try {
+                await jade.invoke('windowAction', action);
+                console.log(`发送窗口操作消息: ${action}`);
+            } catch (error) {
+                console.error(`发送窗口操作消息失败: ${action}`, error);
+            }
         }
 
-        // 监听窗口状态变化事件，用于更新最大化/还原按钮
-        jade.ipcMain('window-state-changed', function (state) {
+        // 监听窗口状态变化事件，用于更新最大化/还原按钮（使用新的on API）
+        jade.on('window-state-changed', function (payload) {
             const btnMaximize = document.querySelector('.btn-maximize') || document.querySelector('.btn-restore');
-            data = JSON.parse(state);
             if (btnMaximize) {
-                if (data.isMaximized) {
+                if (payload.isMaximized) {
                     // 窗口已最大化，显示还原图标
                     btnMaximize.classList.add('btn-restore');
                     btnMaximize.classList.remove('btn-maximize');
@@ -184,29 +331,6 @@
                 }
             }
         });
-
-        // ========================
-        // 3. 接收IPC消息功能 (使用新的jade.ipcMain订阅机制)
-        // ========================
-        // 使用jade.ipcMain订阅消息
-        if (window.jade && window.jade.ipcMain) {
-            // 订阅'message'类型的消息
-            jade.ipcMain('message', function (msg) {
-                console.log('通过jade.ipcMain收到消息:', msg);
-
-                // 处理消息
-                if (msg) {
-                    // 将收到的消息添加到聊天区域
-                    const msgDiv = document.createElement('div');
-                    msgDiv.classList.add('message', 'received');
-                    msgDiv.textContent = msg;
-                    chatContainer.appendChild(msgDiv);
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                }
-            });
-        }
-
-
 
 
     </script>
