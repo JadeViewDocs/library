@@ -61,6 +61,7 @@ struct WebViewWindowOptions {
     i32 hide_window;
     i32 use_page_icon;
     i32 borderless;
+    i32 content_protection;
 };
 
 // IPC回调函数类型
@@ -88,6 +89,8 @@ extern "system" i32 close_window(u32 window_id);
 extern "system" i32 minimize_window(u32 window_id);
 extern "system" i32 toggle_maximize_window(u32 window_id);
 extern "system" i32 is_window_maximized(u32 window_id);
+extern "system" i32 set_content_protection(u32 window_id, i32 content_protection);
+extern "system" i32 set_webview_zoom(u32 window_id, double level);
 extern "system" u32 get_window_count();
 extern "system" u32 jade_on(const c_char* event_name, IpcCallback callback);
 extern "system" i32 jade_off(const c_char* event_name, u32 callback_id);
