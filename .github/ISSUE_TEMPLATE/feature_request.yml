@@ -1,5 +1,5 @@
 name: 功能请求
-about: 建议一个新功能或对现有功能的改进
+description: 建议一个新功能或对现有功能的改进
 title: "[Feature] 简短描述"
 labels: enhancement
 assignees: ""

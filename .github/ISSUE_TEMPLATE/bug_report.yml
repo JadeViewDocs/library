@@ -1,5 +1,5 @@
 name: Bug 报告
-about: 创建一个 Bug 报告，帮助我们改进 JadeView
+description: 创建一个 Bug 报告，帮助我们改进 JadeView
 title: "[Bug] 简短描述"
 labels: bug
 assignees: ""

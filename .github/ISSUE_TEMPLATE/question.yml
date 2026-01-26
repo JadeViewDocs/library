@@ -1,5 +1,5 @@
 name: 问题咨询
-about: 关于 JadeView 使用的问题或疑问
+description: 关于 JadeView 使用的问题或疑问
 title: "[Question] 简短描述"
 labels: question
 assignees: ""
