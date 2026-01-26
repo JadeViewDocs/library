@@ -1,0 +1,98 @@
+name: Bug 报告
+about: 创建一个 Bug 报告，帮助我们改进 JadeView
+title: "[Bug] 简短描述"
+labels: bug
+assignees: ""
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间提交 Bug 报告！在提交之前，请确保您已经查看了现有的 Issues，以避免重复报告。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 请清晰、详细地描述您遇到的问题。
+      placeholder: 例如：当我尝试创建窗口时，程序崩溃了。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 预期行为
+      description: 请描述您期望看到的结果。
+      placeholder: 例如：程序应该成功创建窗口，而不是崩溃。
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: 实际行为
+      description: 请描述实际发生的情况。
+      placeholder: 例如：程序崩溃，并显示错误信息 "Segmentation Fault".
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 复现步骤
+      description: 请提供详细的步骤，以便我们能够重现这个问题。
+      placeholder: |
+        1. 初始化 JadeView
+        2. 设置窗口参数
+        3. 调用创建窗口函数
+        4. 程序崩溃
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 请提供您的环境信息，包括操作系统、JadeView 版本等。
+      value: |
+        - 操作系统：Windows 10 x64
+        - JadeView 版本：v1.1.0
+        - 语言环境：易语言 / C 语言
+        - 编译工具：易语言 5.91 / MSVC 2022
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs-and-screenshots
+    attributes:
+      label: 日志和截图
+      description: 请提供相关的日志文件、错误信息或截图，这将有助于我们更好地理解问题。
+      placeholder: |
+        错误信息：
+        ```
+        错误码：1001
+        错误信息：Failed to create window
+        ```
+
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: 附加信息
+      description: 请提供任何其他可能有助于解决问题的信息。
+      placeholder: 例如：这个问题只在特定的操作系统版本上出现，或者只在使用特定的功能时出现。
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: 检查项
+      description: 在提交之前，请确保您已经完成了以下检查：
+      options:
+        - label: 我已经查看了现有的 Issues，确保没有重复报告
+          required: true
+        - label: 我已经尝试使用最新版本的 JadeView，问题仍然存在
+          required: true
+        - label: 我已经提供了完整的环境信息
+          required: true
+        - label: 我已经提供了详细的复现步骤
+          required: true
