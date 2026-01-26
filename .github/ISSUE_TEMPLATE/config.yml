@@ -1,1 +1,11 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
+contact_links:
+  - name: 文档
+    url: https://jade.run/
+    about: 请先查看官方文档，可能已经有您问题的答案
+  - name: QQ群
+    url: https://qm.qq.com/q/pL3Lo2kAgg
+    about: 加入我们的 QQ 群，与其他开发者交流
+  - name: 示例代码
+    url: https://github.com/JadeViewDocs/library/tree/main/e_v1.1
+    about: 查看示例代码，了解 JadeView 的使用方法

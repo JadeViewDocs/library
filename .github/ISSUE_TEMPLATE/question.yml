@@ -1,78 +1,47 @@
-name: 问题咨询
-description: 关于 JadeView 使用的问题或疑问
-title: "[Question] 简短描述"
-labels: question
-assignees: ""
+name: Question
+description: Ask a question about using JadeView
+title: "[Question] "
+labels:
+  - question
 
 body:
   - type: markdown
     attributes:
       value: |
-        感谢您的提问！我们很乐意为您提供帮助。在提问之前，请确保您已经查看了文档和现有的 Issues，以避免重复提问。
+        Thanks for your question!
 
   - type: textarea
-    id: question-description
+    id: what-you-need
     attributes:
-      label: 问题描述
-      description: 请清晰、详细地描述您的问题或疑问。
-      placeholder: 例如：如何在 JadeView 中实现窗口之间的通信？
+      label: What do you need help with?
+      description: Describe your question in detail
+      placeholder: I need help with...
     validations:
       required: true
 
   - type: textarea
     id: what-you-tried
     attributes:
-      label: 尝试过的解决方法
-      description: 请描述您已经尝试过的解决方法，以及它们的结果。
-      placeholder: |
-        1. 我查看了文档，但没有找到相关信息
-        2. 我尝试使用 IPC 通信，但不知道如何在多个窗口之间设置
-        3. 我搜索了现有的 Issues，但没有找到类似的问题
+      label: What have you tried so far?
+      description: Describe what you've already tried
+      placeholder: I've tried...
 
   - type: textarea
-    id: code-screenshots
+    id: code-examples
     attributes:
-      label: 相关代码或截图
-      description: 请提供相关的代码片段或截图，这将有助于我们更好地理解您的问题。
-      placeholder: |
-        代码片段：
-        ```c
-        // 我尝试这样创建多个窗口，但不知道如何让它们通信
-        uint32_t window1 = create_webview_window("http://localhost:8000", 0, &options, NULL);
-        uint32_t window2 = create_webview_window("http://localhost:8000", 0, &options, NULL);
+      label: Code examples
+      description: Share any relevant code examples
+      placeholder: ```c
+        // Your code here
         ```
 
   - type: textarea
     id: environment
     attributes:
-      label: 环境信息
-      description: 请提供您的环境信息，包括操作系统、JadeView 版本等。
-      value: |
-        - 操作系统：Windows 10 x64
-        - JadeView 版本：v1.1.0
-        - 语言环境：易语言 / C 语言
-        - 编译工具：易语言 5.91 / MSVC 2022
-    validations:
-      required: true
-
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: 附加信息
-      description: 请提供任何其他可能有助于回答您问题的信息。
-      placeholder: 例如：我正在开发一个多窗口的桌面应用，需要窗口之间能够传递数据。
-
-  - type: checkboxes
-    id: checkboxes
-    attributes:
-      label: 检查项
-      description: 在提交之前，请确保您已经完成了以下检查：
-      options:
-        - label: 我已经查看了文档，没有找到答案
-          required: true
-        - label: 我已经搜索了现有的 Issues，没有找到类似的问题
-          required: true
-        - label: 我已经提供了完整的环境信息
-          required: true
-        - label: 我已经提供了相关的代码或截图（如果适用）
-          required: true
+      label: Environment
+      description: What environment are you using?
+      placeholder: |
+        - OS: Windows 10
+        - JadeView Version: v1.1.0
+        - Language: C / E Language
+        - Compiler: MSVC 2022 / E Language 5.91
