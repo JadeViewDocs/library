@@ -4,7 +4,7 @@
 :root {
     --app-bg: transparent; 
     
-    /* 浅色模式主题变量 */
+    /* æµ…è‰²æ¨¡å¼ä¸»é¢˜å˜é‡ */
     --title-bar-bg: rgba(255, 255, 255, 0.4);
     --surface-bg: rgba(255, 255, 255, 0.6);
     --surface-border: rgba(0, 0, 0, 0.08);
@@ -26,7 +26,7 @@
 }
 
 [data-theme="dark"] {
-    /* 深色模式主题变量 */
+    /* æ·±è‰²æ¨¡å¼ä¸»é¢˜å˜é‡ */
     --title-bar-bg: rgba(32, 32, 32, 0.4);
     --surface-bg: rgba(45, 45, 45, 0.6);
     --surface-border: rgba(255, 255, 255, 0.08);
@@ -45,13 +45,13 @@
 }
 
 /* =========================================
-   基础布局
+   åŸºç¡€å¸ƒå±€
    ========================================= */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: var(--app-bg); /* 关键：透明以支持 Mica */
+    background-color: var(--app-bg); /* å…³é”®ï¼šé€æ˜Žä»¥æ”¯æŒ Mica */
 }
 
 body {
@@ -64,18 +64,17 @@ body {
 }
 
 /* =========================================
-   自定义标题栏 & CSS 绘图按钮
+   è‡ªå®šä¹‰æ ‡é¢˜æ  & CSS ç»˜å›¾æŒ‰é’®
    ========================================= */
 .custom-title-bar {
     height: 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--title-bar-bg);
+/*     background-color: var(--title-bar-bg); */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--surface-border);
-    app-region: drag;
     flex-shrink: 0;
     z-index: 9999;
 }
@@ -90,7 +89,7 @@ body {
     gap: 8px;
 }
 
-/* Windows 11风格标题栏图标 - CSS绘图 */
+/* Windows 11é£Žæ ¼æ ‡é¢˜æ å›¾æ ‡ - CSSç»˜å›¾ */
 .title-bar-icon {
     width: 22px;
     height: 22px;
@@ -106,11 +105,10 @@ body {
 
 .title-right {
     display: flex;
-    -webkit-app-region: no-drag;
     height: 100%;
 }
 
-/* 按钮通用样式 */
+/* æŒ‰é’®é€šç”¨æ ·å¼ */
 .window-btn {
     width: 46px;
     height: 100%;
@@ -126,12 +124,12 @@ body {
 
 .window-btn:hover { background-color: var(--hover-bg); }
 
-/* 关闭按钮红色反馈 */
+/* å…³é—­æŒ‰é’®çº¢è‰²åé¦ˆ */
 .window-btn.btn-close:hover { background-color: #e81123 !important; }
 .window-btn.btn-close:hover i::before,
 .window-btn.btn-close:hover i::after { background-color: white !important; }
 
-/* 图标绘图基础 */
+/* å›¾æ ‡ç»˜å›¾åŸºç¡€ */
 .window-btn i {
     display: block;
     position: relative;
@@ -139,10 +137,10 @@ body {
     transition: background-color 0.1s;
 }
 
-/* 最小化图标 - 横线 */
+/* æœ€å°åŒ–å›¾æ ‡ - æ¨ªçº¿ */
 .btn-minimize i { width: 10px; height: 1px; }
 
-/* 最大化图标 - 方框 */
+/* æœ€å¤§åŒ–å›¾æ ‡ - æ–¹æ¡† */
 .btn-maximize i {
     width: 9px; height: 9px;
     background-color: transparent !important;
@@ -151,7 +149,7 @@ body {
     border-radius: 2px;
 }
 
-/* 关闭图标 - 叉号 */
+/* å…³é—­å›¾æ ‡ - å‰å· */
 .btn-close i { width: 12px; height: 12px; background-color: transparent !important; }
 .btn-close i::before, .btn-close i::after {
     content: '';
@@ -161,12 +159,12 @@ body {
     width: 100%; 
     height: 1px;
     background-color: var(--text-primary);
-    transform: translateY(-50%); /* 确保垂直居中 */
+    transform: translateY(-50%); /* ç¡®ä¿åž‚ç›´å±…ä¸­ */
 }
 .btn-close i::before { transform: translateY(-50%) rotate(45deg); }
 .btn-close i::after { transform: translateY(-50%) rotate(-45deg); }
 
-/* 文档图标 - 问号 */
+/* æ–‡æ¡£å›¾æ ‡ - é—®å· */
 .btn-doc i { width: 12px; height: 12px; background-color: transparent !important; }
 .btn-doc i::before {
     content: '?';
@@ -178,13 +176,13 @@ body {
     color: var(--text-primary);
     font-size: 12px;
     font-weight: bold;
-    transform: translate(-50%, -50%); /* 确保完全居中 */
+    transform: translate(-50%, -50%); /* ç¡®ä¿å®Œå…¨å±…ä¸­ */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* 还原图标 - 双方框设计 */
+/* è¿˜åŽŸå›¾æ ‡ - åŒæ–¹æ¡†è®¾è®¡ */
 .btn-restore i {
     width: 12px;
     height: 12px;
@@ -193,26 +191,26 @@ body {
     display: block;
 }
 
-/* 底层方块：仅绘制右边和顶边 */
+/* åº•å±‚æ–¹å—ï¼šä»…ç»˜åˆ¶å³è¾¹å’Œé¡¶è¾¹ */
 .btn-restore i::before {
     content: '';
     position: absolute;
-    width: 10px;
-    height: 10px;
-    top: -2px;
-    left:3px;
+    width: 6px;
+    height: 6px;
+    top: 2px;
+    left: 3px;
     border-right: 1px solid var(--text-primary);
     border-top: 1px solid var(--text-primary);
     border-radius: 2px;
     background-color: transparent;
 }
 
-/* 顶层方块：完整四边 */
+/* é¡¶å±‚æ–¹å—ï¼šå®Œæ•´å››è¾¹ */
 .btn-restore i::after {
     content: '';
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
     bottom: 0;
     left: 0;
     border: 1px solid var(--text-primary);
@@ -221,7 +219,7 @@ body {
 }
 
 /* =========================================
-   内容容器与控件
+   å†…å®¹å®¹å™¨ä¸ŽæŽ§ä»¶
    ========================================= */
 .app-window {
     flex: 1;
@@ -232,7 +230,7 @@ body {
     overflow: hidden;
 }
 
-/* 左侧聊天区域 */
+/* å·¦ä¾§èŠå¤©åŒºåŸŸ */
 .left-panel {
     width: 58%;
     display: flex;
@@ -240,7 +238,7 @@ body {
     gap: 16px;
 }
 
-/* 右侧设置区域 */
+/* å³ä¾§è®¾ç½®åŒºåŸŸ */
 .right-panel {
     width: 42%;
     display: flex;
@@ -291,7 +289,7 @@ button {
     font-size: 13px;
     cursor: pointer;
     transition: all 0.1s;
-    border-bottom: 1px solid rgba(0,0,0,0.2); /* 模拟 Win11 按钮阴影 */
+    border-bottom: 1px solid rgba(0,0,0,0.2); /* æ¨¡æ‹Ÿ Win11 æŒ‰é’®é˜´å½± */
 }
 
 
@@ -320,11 +318,11 @@ button:disabled {
 }
 
 /* =========================================
-   文档卡片样式
+   æ–‡æ¡£å¡ç‰‡æ ·å¼
    ========================================= */
 
 
-/* 卡片网格布局 */
+/* å¡ç‰‡ç½‘æ ¼å¸ƒå±€ */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -332,7 +330,7 @@ button:disabled {
     margin-top: 12px;
 }
 
-/* 文档卡片样式 */
+/* æ–‡æ¡£å¡ç‰‡æ ·å¼ */
 .doc-card {
     display: flex;
     align-items: flex-start;
@@ -354,13 +352,13 @@ button:disabled {
     transform: translateY(-1px);
 }
 
-/* 卡片图标 */
+/* å¡ç‰‡å›¾æ ‡ */
 .card-icon {
     font-size: 24px;
     line-height: 1;
 }
 
-/* 卡片内容 */
+/* å¡ç‰‡å†…å®¹ */
 .card-content {
     flex: 1;
     display: flex;
@@ -368,14 +366,14 @@ button:disabled {
     gap: 4px;
 }
 
-/* 卡片标题 */
+/* å¡ç‰‡æ ‡é¢˜ */
 .card-title {
     font-size: 14px;
     font-weight: 600;
     color: var(--text-primary);
 }
 
-/* 卡片描述 */
+/* å¡ç‰‡æè¿° */
 .card-desc {
     font-size: 12px;
     color: var(--text-secondary);
@@ -383,7 +381,7 @@ button:disabled {
 }
 
 /* =========================================
-   聊天与输入区 (Glass Effect)
+   èŠå¤©ä¸Žè¾“å…¥åŒº (Glass Effect)
    ========================================= */
 .chat-area {
     flex: 1;
@@ -450,7 +448,7 @@ button:disabled {
 
 .input-area { display: flex; gap: 8px; }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
     flex: 1;
     background-color: var(--control-bg);
     border: 1px solid var(--control-border);
@@ -461,11 +459,47 @@ input[type="text"] {
     color: var(--text-primary);
     outline: none;
     transition: all 0.2s;
+    font-size: 14px;
+    /* éšè—æ•°å­—è¾“å…¥æ¡†çš„ä¸Šä¸‹ç®­å¤´ */
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
-input[type="text"]:focus {
+/* é’ˆå¯¹WebKitæµè§ˆå™¨ï¼ˆChrome, Safariï¼‰çš„é¢å¤–æ ·å¼ */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
     background-color: var(--surface-bg);
     border-bottom-color: var(--accent-color);
+}
+
+.loop-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.loop-controls label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.message .msg-info {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.message.error .msg-content {
+    background: rgba(255, 71, 87, 0.1);
+    border-color: rgba(255, 71, 87, 0.3);
+    color: #ff4757;
 }
 
 #sendBtn {
