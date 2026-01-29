@@ -43,84 +43,6 @@ JadeView 是一个基于 Rust 开发的 WebView 窗口库，提供 C 语言兼�
 | `JadeView.e` | 易语言SDK |
 
 
-
-## 🚀 快速开始
-
-### 易语言调用示例
-
-```e
-.版本 2
-.支持库 spec
-
-.程序集 程序集1
-.程序集变量 窗口设置, JadeView窗口设置
-.程序集变量 JadeView, JadeView
-.程序集变量 窗口id, 整数型
-
-.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
-    创建测试窗口 ()
-    返回 (0)  ' 可以根据您的需要返回任意数值
-
-.子程序 创建测试窗口
-.局部变量 JadeRady, 逻辑型
-.局部变量 载入url, 文本型
-.局部变量 服务目录, 文本型
-.局部变量 开启DevTools, 逻辑型
-
-    开启DevTools ＝ 是否为调试版 ()
-    JadeRady ＝ JadeView.初始化 (开启DevTools, GBK文本到UTF8文本 (取运行目录 ()))
-    
-    .如果真 (JadeRady)
-        服务目录 ＝ 取运行目录 () ＋ "\web"
-        载入url ＝ JadeView创建本地服务 (GBK文本到UTF8文本 (服务目录), "jadeDemo")
-        
-        窗口设置.可调整大小边框 ＝ 真
-        窗口设置.去除标题栏 ＝ 真
-        窗口设置.高度 ＝ 620
-        窗口设置.宽度 ＝ 530
-        窗口设置.使用页面图标 ＝ 真
-        
-        窗口id ＝ JadeView.创建窗口 (载入url, 0, 窗口设置)
-        .如果真 (窗口id ＞ 0)
-            JadeView消息循环 ()
-        .如果真结束
-    .如果真结束
-```
-
-### C语言调用示例
-
-```c
-#include <stdio.h>
-#include "JadeView.h"
-
-int main() {
-    // 初始化JadeView
-    int success = JadeView_init(1, NULL, NULL);
-    if (success) {
-        printf("JadeView初始化成功\n");
-        
-        // 创建WebView窗口
-        WebViewWindowOptions options = {
-            .width = 800,
-            .height = 600,
-            .resizable = 1
-        };
-        
-        uint32_t window_id = create_webview_window("https://www.example.com", 0, &options, NULL);
-        if (window_id > 0) {
-            printf("窗口创建成功，ID: %u\n", window_id);
-            
-            // 运行消息循环
-            run_message_loop();
-        }
-    } else {
-        printf("JadeView初始化失败\n");
-    }
-    
-    return 0;
-}
-```
-
 ## 📚 API文档
 
 完整的 API 文档位于 `docs` 目录下，包含以下内容：
@@ -140,24 +62,6 @@ int main() {
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request！
-
-### 提交 Issue
-
-在提交 Issue 之前，请确保您已经：
-
-1. 查看了现有的 Issues，避免重复报告
-2. 查看了 [API 文档](#-api文档) 和 [示例代码](#-快速开始)
-3. 尝试使用最新版本的 JadeView
-
-我们提供了以下 Issues 模板，您可以根据需要选择：
-
-- **Bug 报告**：用于报告程序错误或问题
-- **功能请求**：用于建议新功能或改进
-- **问题咨询**：用于提问或寻求帮助
-
-### 贡献代码
-
-如果您想贡献代码，请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 文件，了解开发环境搭建、代码规范和提交 PR 的流程。
 
 ---
 

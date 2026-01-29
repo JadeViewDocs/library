@@ -35,7 +35,7 @@
             </div>
 
             <div class="input-area">
-                <input type="text" id="msgInput" placeholder="发送IPC消息" autocomplete="off">
+                <input jade-allow-contextmenu type="text" id="msgInput" placeholder="发送IPC消息" autocomplete="off">
                 <button type="button" id="sendBtn" onclick="sendMessage()">发送</button>
             </div>
         </div>
@@ -311,6 +311,8 @@
                 console.error(`发送窗口操作消息失败: ${action}`, error);
             }
         }
+
+
 
         // 监听窗口状态变化事件，用于更新最大化/还原按钮（使用新的on API）
         jade.on('window-state-changed', function (payload) {
