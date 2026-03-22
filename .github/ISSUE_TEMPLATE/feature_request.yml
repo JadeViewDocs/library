@@ -27,18 +27,6 @@ body:
         - 其他
     validations:
       required: true
-  - type: dropdown
-    id: platform
-    attributes:
-      label: 目标平台
-      description: JadeView 当前主要支持 Windows x86 / x64。
-      options:
-        - Windows x86
-        - Windows x64
-        - x86 与 x64 均需
-        - 与具体架构无关（如仅文档或通用行为）
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:
