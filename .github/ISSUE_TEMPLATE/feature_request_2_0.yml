@@ -1,0 +1,42 @@
+name: 2.0 功能请求
+description: 针对 JadeView 2.0 版本的功能或改进建议
+title: "[FEATURE-2.0] "
+labels:
+  - feature
+  - "2.0"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        本模板用于 **2.0 路线图**相关需求。请说明「需要什么」以及「为什么需要」，我们会据此评估优先级与排期。
+  - type: textarea
+    id: description
+    attributes:
+      label: 功能描述
+      description: 你希望 2.0 增加或改变什么。
+      placeholder: 例如：在某某流程中支持……
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 动机与价值
+      description: 为什么需要它？解决什么问题或带来什么好处。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 实现思路（可选）
+      description: 若你有交互、数据流或技术实现上的想法，可在此说明。
+      render: markdown
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 替代方案（可选）
+      description: 若考虑过其他解决方式，可在此列出。
+  - type: textarea
+    id: extra
+    attributes:
+      label: 其他信息
+      description: 相关链接、截图、参考产品等。
